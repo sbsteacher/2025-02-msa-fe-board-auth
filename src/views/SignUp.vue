@@ -1,5 +1,6 @@
 <script setup>
 import { reactive } from 'vue';
+import userService from '@/services/userService';
 
 const state = reactive({
     signup: {
@@ -12,7 +13,13 @@ const state = reactive({
 });
 
 const doSignUp = async () => {
-    alert('연결됐나?');
+    //비밀번호, 확인비밀번호 내용이 다르면 alert('비밀번호를 확인해 주세요') 그리고 메소드 종료
+    if(state.signup.pw !== state.checkPw) {
+        alert('비밀번호를 확인해 주세요');
+        return;
+    }
+    const result = await userService.signUp(state.signup);
+    console.log('result: ', result);
 }
 </script>
 
@@ -27,7 +34,7 @@ const doSignUp = async () => {
     <label>여성<input type="radio" value="2" v-model="state.signup.gender"></label>
     <label>남성<input type="radio" value="1" v-model="state.signup.gender"></label>
 </div>
-<div><button>회원가입</button></div>
+<div><button @click="doSignUp">회원가입</button></div>
 </template>
 
 <style scoped>
