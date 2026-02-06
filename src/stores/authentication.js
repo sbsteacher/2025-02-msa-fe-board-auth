@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 export const useAuthenticationStore = defineStore('authentication', () => {
     const state = reactive({
         signedUser: {
-            id: 0,
+            signedUserId: 0,
             nm: ''
         },
         isSigned: false
@@ -20,4 +20,4 @@ export const useAuthenticationStore = defineStore('authentication', () => {
         'state': state,
         'signIn': signIn
     }
-});
+}, { persist: true });
