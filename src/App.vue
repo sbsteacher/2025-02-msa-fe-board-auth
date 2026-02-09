@@ -18,6 +18,8 @@ const doSignout = async () => {
 
 <template>
 <header>
+  <router-link to="/">홈</router-link>
+  <router-link to="/board/list">리스트</router-link>
   <div v-if="authentication.state.isSigned">
     {{ authentication.state.signedUser.nm }}님 환영합니다.
     <router-link to="/board/write">글쓰기</router-link>

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import SignIn from '../views/SignIn.vue';
 import BoardWriteMod from '@/views/BoardWriteMod.vue';
+import BoardList from '@/views/BoardList.vue';
 import { useAuthenticationStore } from '@/stores/authentication';
 
 const router = createRouter({
@@ -24,6 +25,10 @@ const router = createRouter({
       path: '/board/write',
       component: BoardWriteMod,
     },
+    {
+      path: '/board/list',
+      component: BoardList,
+    },
   ],
 });
 
@@ -39,9 +44,11 @@ router.beforeEach( (to, from) => {
   const authentication = useAuthenticationStore();
 
   //이동하는 경로가 unSignedPathList에 포함되어 있다면 true, 없으면 false
-  if( unSignedPathList.includes(to.path) && authentication.state.isSigned ) {
+  if( publicPathList.includes(to.path)) {
+    return;
+  } else if( unSignedPathList.includes(to.path) && authentication.state.isSigned) {
     return { path: '/' };
-  } else if( !authentication.state.isSigned && !unSignedPathList.includes(to.path)) {
+  } else if( !authentication.state.isSigned && !unSignedPathList.includes(to.path) ) {
     return { path: '/signin'}
   }
 
