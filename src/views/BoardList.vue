@@ -59,7 +59,9 @@ onMounted(async () => {
         </tbody>
     </table>
     <div>
-        <span class="page" :class="item == state.currentPage ? 'selected': ''" v-for="item in state.maxPage" :key="item">{{ item }}</span>
+        <span class="page" v-for="item in state.maxPage" :key="item" :class="item == state.currentPage ? 'selected' : ''">
+            {{ item }}
+        </span>
     </div>
 </div>
 
@@ -69,6 +71,7 @@ onMounted(async () => {
 table { border-collapse: collapse; }
 table td, table th { border: 1px solid #eee; padding: 10px; }
 table tbody tr:hover { background-color: aliceblue; cursor: pointer;}
+.page { cursor: pointer; }
 .page:not(:first-child) { margin-left: 8px; }
 .selected { color: red; font-weight: bold; }
 </style>
