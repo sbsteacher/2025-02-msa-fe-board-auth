@@ -37,9 +37,8 @@ const getBoardList = async () => {
     state.list = result.resultData;
 }
 
-onMounted(async () => {
-    getBoardMaxPage();
-    getBoardList();    
+onMounted(() => {
+    doSearch();
 });
 
 const goToPage = page => {
