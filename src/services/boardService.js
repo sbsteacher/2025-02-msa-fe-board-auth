@@ -23,6 +23,11 @@ class BoardService {
         return res.data;
     }
 
+    async putBoard(params) {
+        const res = await axios.put(this.#url, params);
+        return res.data;
+    }
+
     async delBoard(params) {
         const res = await axios.delete(this.#url, {params});
         return res.data;

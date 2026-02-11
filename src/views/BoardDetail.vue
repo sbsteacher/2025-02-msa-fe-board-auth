@@ -32,6 +32,19 @@ const doDelete = async () => {
         alert(result.resultMessage);
     }
 }
+
+const goToMod = () => {    
+    router.push({
+        path: '/board/write',
+        state: {
+            data: {
+                id: route.params.id
+                , title: state.data.title
+                , contents: state.data.contents
+            }
+        }
+    });
+}
 </script>
 
 <template>
@@ -42,7 +55,7 @@ const doDelete = async () => {
 <div>{{ state.data.contents }}</div>
 <div v-show="authentication.state.signedUser?.signedUserId === state.data.userId">
     <button @click="doDelete">삭제</button>
-    <button>수정</button>
+    <button @click="goToMod">수정</button>
 </div>
 </template>
 
