@@ -1,6 +1,9 @@
 <script setup>
 import { reactive, onMounted, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import boardService from '@/services/boardService';
+
+const router = useRouter();
 
 const scrollToTop = () => {
     window.scrollTo({
@@ -45,13 +48,17 @@ const goToPage = page => {
     console.log(typeof page);
     state.currentPage = page;
     getBoardList();
-    //scrollToTop();
+    scrollToTop();
 }
 
 const doSearch = () => {
     state.currentPage = 1;
     getBoardMaxPage();
     getBoardList(); 
+}
+
+const moveToDetail = id => {
+    router.push(`/board/${id}`);
 }
 
 //페이징 그룹의 번호 갯수
@@ -106,7 +113,7 @@ const goToLastPage = () => {
             </tr>
         </thead>
         <tbody>
-            <tr v-for="item in state.list" :key="item.id">
+            <tr v-for="item in state.list" :key="item.id" @click="moveToDetail(item.id)">
                 <td>{{ item.id }}</td>
                 <td>{{ item.title }}</td>
                 <td>{{ item.nm }}</td>
