@@ -16,7 +16,8 @@ const state = reactive({
     searchText: '',
     size: 50,
     currentPage: 1,
-    maxPage: 0
+    maxPage: 0,
+    relatedSearchList: [ '아아아', '나나나나' ]
 });
 
 const getBoardMaxPage = async () => {
@@ -93,12 +94,28 @@ const goToNextPage = () => {
 const goToLastPage = () => {
     goToPage(state.maxPage);
 }
+
+
+let timer;
+
+const typing = e => {    
+    if(timer) { clearTimeout(timer); }
+    timer = setTimeout(() => {
+        console.log('통신!!!!!');
+    }, 1000);
+}
+
 </script>
 
 <template>
 <h3>게시판 리스트</h3>
-<div>
-    <input type="search" v-model="state.searchText" @keyup.enter="doSearch">
+<div class="search-container">
+    <input type="search" v-model="state.searchText" @keyup="typing" @keyup.enter="doSearch">
+    <div class="related-search-container">
+        <div v-for="item in state.relatedSearchList">
+            {{ item }}
+        </div>
+    </div>
     <button @click="doSearch">검색</button>
 </div>
 <div v-if="state.list.length === 0">게시글이 없습니다.</div>
@@ -143,4 +160,8 @@ table tbody tr:hover { background-color: aliceblue; cursor: pointer;}
 .page:not(:first-child) { margin-left: 8px; }
 .selected { color: red; font-weight: bold; }
 .pagination { display: flex; justify-content: center; }
+
+.search-container { position: relative; }
+.related-search-container { position: absolute; left: 0; top: 25px; background-color: #fff; 
+                            z-index: 5; width: 170px; border: 1px solid #eee; }
 </style>
