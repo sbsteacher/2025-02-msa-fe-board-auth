@@ -17,7 +17,7 @@ const state = reactive({
     size: 50,
     currentPage: 1,
     maxPage: 0,
-    relatedSearchList: [ '아아아', '나나나나' ]
+    relatedSearchList: []
 });
 
 const getBoardMaxPage = async () => {
@@ -53,6 +53,7 @@ const goToPage = page => {
 }
 
 const doSearch = () => {
+    state.relatedSearchList = [];
     state.currentPage = 1;
     getBoardMaxPage();
     getBoardList(); 
@@ -101,18 +102,33 @@ let timer;
 const typing = e => {    
     if(timer) { clearTimeout(timer); }
     timer = setTimeout(() => {
-        console.log('통신!!!!!');
-    }, 1000);
+        getRelatedTitles();
+    }, 700);
 }
 
+
+const getRelatedTitles = async () => {
+    if(state.searchText.length === 0) {
+        state.relatedSearchList = [];
+        return;
+    }
+    const params = { search_text: state.searchText }
+    const result = await boardService.getBoardRelatedTitles(params);
+    state.relatedSearchList = result.resultData;
+}
+
+const selectRelatedTitle = title => {
+    state.searchText = title;
+    doSearch();
+}
 </script>
 
 <template>
 <h3>게시판 리스트</h3>
 <div class="search-container">
     <input type="search" v-model="state.searchText" @keyup="typing" @keyup.enter="doSearch">
-    <div class="related-search-container">
-        <div v-for="item in state.relatedSearchList">
+    <div class="related-search-container" v-if="state.relatedSearchList.length > 0">
+        <div v-for="item in state.relatedSearchList" class="item" @click="selectRelatedTitle(item)">
             {{ item }}
         </div>
     </div>
@@ -153,6 +169,7 @@ const typing = e => {
 </template>
 
 <style scoped>
+
 table { border-collapse: collapse; }
 table td, table th { border: 1px solid #eee; padding: 10px; }
 table tbody tr:hover { background-color: aliceblue; cursor: pointer;}
@@ -163,5 +180,8 @@ table tbody tr:hover { background-color: aliceblue; cursor: pointer;}
 
 .search-container { position: relative; }
 .related-search-container { position: absolute; left: 0; top: 25px; background-color: #fff; 
-                            z-index: 5; width: 170px; border: 1px solid #eee; }
+                            z-index: 5; width: 170px; border: 1px solid #eee; 
+                            padding: 5px;
+                            }
+.related-search-container .item:hover { background-color: #eee; cursor: pointer; }                            
 </style>

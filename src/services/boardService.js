@@ -23,6 +23,11 @@ class BoardService {
         return res.data;
     }
 
+    async getBoardRelatedTitles(params) {
+        const res = await axios.get(`${this.#url}/related_search`, { params });
+        return res.data;
+    }
+
     async putBoard(params) {
         const res = await axios.put(this.#url, params);
         return res.data;
