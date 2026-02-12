@@ -110,7 +110,8 @@ const typing = e => {
 const getRelatedTitles = async () => {
     if(state.searchText.length === 0) {
         state.relatedSearchList = [];
-        return;
+        doSearch();    
+        return;    
     }
     const params = { search_text: state.searchText }
     const result = await boardService.getBoardRelatedTitles(params);
@@ -126,7 +127,7 @@ const selectRelatedTitle = title => {
 <template>
 <h3>게시판 리스트</h3>
 <div class="search-container">
-    <input type="search" v-model="state.searchText" @keyup="typing" @keyup.enter="doSearch">
+    <input type="search" v-model="state.searchText" @keyup="typing" @keyup.enter="doSearch" @change="textChange">
     <div class="related-search-container" v-if="state.relatedSearchList.length > 0">
         <div v-for="item in state.relatedSearchList" class="item" @click="selectRelatedTitle(item)">
             {{ item }}
